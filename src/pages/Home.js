@@ -14,7 +14,7 @@ import { SkillCard } from "../components/SkillCard";
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState([]);
-  const [gretting, setGretting] = useState('');
+  const [greeting, setGreeting] = useState('');
 
   function handleAddNewSkill() {
     setMySkills(oldState => [...oldState, newSkill]);
@@ -24,13 +24,13 @@ export function Home() {
     const currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-      setGretting('Good morning!');
+      setGreeting('Good morning!');
     }
     else if (currentHour < 18) {
-      setGretting('Good afternoon!');
+      setGreeting('Good afternoon!');
     }
     else {
-      setGretting('Good night!');
+      setGreeting('Good night!');
     }
 
   }, [])
@@ -39,7 +39,7 @@ export function Home() {
 
     <View style={styles.container}>
       <Text style={styles.title}>Welcome,  Aline</Text>
-      <Text>{gretting}</Text>
+      <Text>{greeting}</Text>
 
       <TextInput
         style={styles.input}
