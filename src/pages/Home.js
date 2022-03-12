@@ -1,57 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   Platform,
-  TouchableOpacity
+  FlatList,
+
 } from "react-native";
+import { Button } from "../components/Button";
+import { SkillCard } from "../components/SkillCard";
 
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState([]);
+  const [gretting, setGretting] = useState('');
 
   function handleAddNewSkill() {
     setMySkills(oldState => [...oldState, newSkill]);
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour < 12) {
+      setGretting('Good morning!');
+    }
+    else if (currentHour < 18) {
+      setGretting('Good afternoon!');
+    }
+    else {
+      setGretting('Good night!');
+    }
+
+  }, [])
+
   return (
-    <>
-      <View style={styles.container}>
-        <Text style={styles.title}>Welcome,  Aline</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="New skill"
-          placeholderTextColor="#555"
-          onChangeText={setNewSkill}
-        />
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome,  Aline</Text>
+      <Text>{gretting}</Text>
 
-        <TouchableOpacity
-          style={styles.button}
-          activeOpacity={.7}
-          onPress={handleAddNewSkill}
+      <TextInput
+        style={styles.input}
+        placeholder="New skill"
+        placeholderTextColor="#555"
+        onChangeText={setNewSkill}
+      />
 
-        >
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+      <Button onPress={handleAddNewSkill} />
 
-        <Text style={[styles.title, { marginVertical: 50 }]}>
-          My Skills
-        </Text>
+      <Text style={[styles.title, { marginVertical: 50 }]}>
+        My Skills
+      </Text>
 
-        {
-          mySkills.map(skill => (
-            <TouchableOpacity key={skill} style={styles.buttonSkill}>
-              <Text style={styles.textSkill}>
-                {skill}
-              </Text>
-            </TouchableOpacity>
-          ))
-        }
-      </View>
-    </>
+      <FlatList
+        data={mySkills}
+        keyExtractor={item => item}
+        renderItem={({ item }) => (
+          <SkillCard skill={item} />
+        )}
+      />
+
+    </View>
+
   )
 }
 
@@ -75,29 +87,5 @@ const styles = StyleSheet.create({
     padding: Platform.OS == 'ios' ? 15 : 10,
     marginTop: 30
   },
-  button: {
-    backgroundColor: '#A370F7',
-    padding: 15,
-    borderRadius: 7,
-    alignItems: 'center',
-    marginTop: 20
-  },
-  buttonText: {
-    color: '#FFF',
-    fontSize: 17,
-    fontWeight: 'bold'
-  },
-  buttonSkill: {
-    backgroundColor: '#1F1e25',
-    padding: 15,
-    borderRadius: 50,
-    alignItems: 'center',
-    marginVertical: 10
-  },
-  textSkill: {
-    color: '#FFF',
-    fontSize: 22,
-    fontWeight: 'bold',
-  }
 
 });
