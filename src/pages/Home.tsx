@@ -6,6 +6,7 @@ import {
   TextInput,
   Platform,
   FlatList,
+  Alert,
 
 } from "react-native";
 
@@ -23,8 +24,15 @@ export function Home() {
   const [greeting, setGreeting] = useState('');
 
   function handleAddNewSkill() {
-    if (newSkill.trim() == '') return;
-  
+    if (newSkill.trim() == '') {
+      Alert.alert(
+        "Attention!",
+        "Please, type one skill so it can be added."
+      );
+      return;
+    }
+
+
     const data = {
       id: String(new Date().getTime()),
       name: newSkill
@@ -83,6 +91,7 @@ export function Home() {
 
       <FlatList
         data={mySkills}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <SkillCard
